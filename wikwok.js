@@ -1,3 +1,15 @@
+/* 
+Script Created By FikXzMods
+© 2024 - 2025
+Ch : https://whatsapp.com/channel/0029Vb6Jjyf8KMqtrGJZJy0y
+
+Rename/Ubah Silahkan asal ngga hapus credit
+
+------------------------------
+Renamed by : Nama lu
+Ch : ch lu
+*/
+
     const modeButtons = document.querySelectorAll('.slide-toggle button');
     const promptGroup = document.getElementById('promptGroup');
     const imageInput = document.getElementById('imageInput');
