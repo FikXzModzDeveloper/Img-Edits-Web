@@ -1,6 +1,6 @@
 /* 
 Script Created By FikXzMods
-© 2024 - 2025
+© 2024 - 2025 | Prompt Engginering awowkwk
 CH : https://whatsapp.com/channel/0029Vb6Jjyf8KMqtrGJZJy0y
 CH TELE : https://t.me/ShareCodesfik
 
