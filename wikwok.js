@@ -1,13 +1,17 @@
 /* 
 Script Created By FikXzMods
 © 2024 - 2025
-Ch : https://whatsapp.com/channel/0029Vb6Jjyf8KMqtrGJZJy0y
+CH : https://whatsapp.com/channel/0029Vb6Jjyf8KMqtrGJZJy0y
+CH TELE : https://t.me/ShareCodesfik
 
 Rename/Ubah Silahkan asal ngga hapus credit
-
 ------------------------------
 Renamed by : Nama lu
-Ch : ch lu
+CH : ch lu
+CH TELE : ceha lu klo ada
+sosial media :
+tiktok :
+lnjutin serah lu dah
 */
 
     const modeButtons = document.querySelectorAll('.slide-toggle button');
