@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Img Edit | Powered By FikXzMods</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ShfiraCntk.css">
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <i class="fa-solid fa-wand-magic-sparkles logo-icon"></i>
+      <span class="logo-text">ImgEdit</span>
+    </div>
+
+    <div class="slide-toggle">
+      <button class="active" data-mode="edit">Img Edit</button>
+      <button data-mode="chibi">To Chibi</button>
+      <button data-mode="figure">To Figure</button>
+    </div>
+
+    <div id="errorBox" class="alert hidden">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span id="errorText"></span>
+    </div>
+
+    <form id="mainForm">
+      <div class="form-group">
+        <label class="form-label">Pilih File</label>
+        <div class="file-upload-wrapper">
+          <input type="file" id="imageInput" class="file-upload-input" accept="image/*" required>
+          <label for="imageInput" class="file-upload-label" id="fileLabel">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span id="fileText">Pilih gambar…</span>
+          </label>
+        </div>
+        <div id="uploadStatus" class="upload-status hidden"></div>
+      </div>
+
+      <div class="form-group" id="promptGroup">
+        <label class="form-label" for="promptInput">Prompt (for Img Edit)</label>
+        <div style="position:relative;">
+          <i class="fa-solid fa-pen input-icon"></i>
+          <input type="text" id="promptInput" class="form-control" placeholder="e.g., make it sunset background">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submitBtn">
+        <i class="fa-solid fa-paper-plane"></i> Process
+      </button>
+    </form>
+
+    <div id="progressBox" class="progress-box hidden">
+      <div>Processing…</div>
+      <div class="progress-bar"><div id="progressBar"></div></div>
+    </div>
+
+    <div id="resultBox" class="result-box hidden">
+      <img id="resultImg" class="result-img" src="" alt="Result">
+      <br>
+      <a id="downloadBtn" class="btn btn-download" href="#" download="result.png">
+        <i class="fa-solid fa-download"></i> Download
+      </a>
+    </div>
+
+    <div class="footer">
+      Powered by <a href="https://whatsapp.com/channel/0029Vb6Jjyf8KMqtrGJZJy0y" target="_blank">FikXzMods</a>
+    </div>
+  </div>
+
+  <script src="wikwok.js"></script>
+</body>
+</html>
