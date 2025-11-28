@@ -13,23 +13,51 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none !important;
+}
+
+*,
+*::before,
+*::after {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 *:focus,
 *:active,
-*:focus-visible {
+*:focus-visible,
+*:focus-within {
   outline: none !important;
   box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+button,
+input,
+textarea,
+select,
+a,
+label {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 button:focus,
 button:active,
+button:focus-visible,
 input:focus,
 input:active,
+input:focus-visible,
+textarea:focus,
+textarea:active,
+select:focus,
+select:active,
 a:focus,
-a:active {
+a:active,
+label:focus {
   outline: none !important;
   box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 html,
@@ -103,12 +131,15 @@ body {
   border: 1px solid var(--gray-light);
   border-radius: 0.5rem;
   font-size: 0.95rem;
+  outline: none !important;
   transition: all 0.3s ease;
 }
 
-.form-control:focus {
-  outline: none;
+.form-control:focus,
+.form-control:active {
+  outline: none !important;
   border-color: var(--primary);
+  box-shadow: none !important;
 }
 
 .input-wrapper {
@@ -279,6 +310,13 @@ body {
   width: 100%;
   height: 100%;
   cursor: pointer;
+  outline: none !important;
+}
+
+.file-upload-input:focus,
+.file-upload-input:active {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .file-upload-label {
