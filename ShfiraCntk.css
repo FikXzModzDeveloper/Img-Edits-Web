@@ -15,8 +15,21 @@
   padding: 0;
 }
 
-*:focus {
-  outline: none;
+*:focus,
+*:active,
+*:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+button:focus,
+button:active,
+input:focus,
+input:active,
+a:focus,
+a:active {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 html,
@@ -120,11 +133,18 @@ body {
   font-weight: 500;
   cursor: pointer;
   border: none;
+  outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   transition: background 0.3s ease;
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .btn-primary {
@@ -222,6 +242,7 @@ body {
 .slide-toggle button {
   flex: 1;
   border: none;
+  outline: none;
   background: transparent;
   padding: 0.5rem 0.75rem;
   font-size: 0.9rem;
@@ -230,6 +251,12 @@ body {
   cursor: pointer;
   border-radius: 0.375rem;
   transition: all 0.3s ease;
+}
+
+.slide-toggle button:focus,
+.slide-toggle button:active {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .slide-toggle button.active {
