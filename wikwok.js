@@ -14,6 +14,7 @@ tiktok :
 lnjutin serah lu dah
 */
 
+
 const modeButtons = document.querySelectorAll('.slide-toggle button');
 const promptGroup = document.getElementById('promptGroup');
 const imageInput = document.getElementById('imageInput');
@@ -98,41 +99,16 @@ mainForm.addEventListener('submit', async e => {
     resultImg.src = json.result;
     resultBox.classList.remove('hidden');
     
-    downloadBtn.onclick = async (e) => {
+    downloadBtn.onclick = (e) => {
       e.preventDefault();
-      downloadBtn.disabled = true;
-      downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Downloading...';
-      
-      try {
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(json.result)}`;
-        const response = await fetch(proxyUrl);
-        
-        if (!response.ok) throw new Error('Download failed');
-        
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = `result_${Date.now()}.png`;
-        document.body.appendChild(a);
-        a.click();
-        
-        setTimeout(() => {
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-        }, 100);
-        
-        downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Download';
-        downloadBtn.disabled = false;
-      } catch (err) {
-        console.error('Download error:', err);
-        showError('Download failed. Opening in new tab instead.');
-        window.open(json.result, '_blank');
-        
-        downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Download';
-        downloadBtn.disabled = false;
-      }
+      const a = document.createElement('a');
+      a.href = json.result;
+      a.download = `result_${Date.now()}.png`;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     };
 
   } catch (err) {
