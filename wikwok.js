@@ -98,23 +98,15 @@ mainForm.addEventListener('submit', async e => {
     resultImg.src = json.result;
     resultBox.classList.remove('hidden');
     
-    downloadBtn.onclick = async (e) => {
+    downloadBtn.onclick = (e) => {
       e.preventDefault();
-      try {
-        const response = await fetch(json.result);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `result_${Date.now()}.png`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      } catch (err) {
-        console.error('Download error:', err);
-        showError('Download failed. Please try again.');
-      }
+      const a = document.createElement('a');
+      a.href = json.result;
+      a.download = `result_${Date.now()}.png`;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     };
 
   } catch (err) {
