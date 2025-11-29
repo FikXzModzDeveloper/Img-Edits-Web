@@ -104,11 +104,10 @@ mainForm.addEventListener('submit', async e => {
       downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Downloading...';
       
       try {
-        const response = await fetch(json.result, {
-          mode: 'cors'
-        });
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(json.result)}`;
+        const response = await fetch(proxyUrl);
         
-        if (!response.ok) throw new Error('Network error');
+        if (!response.ok) throw new Error('Download failed');
         
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
@@ -128,7 +127,7 @@ mainForm.addEventListener('submit', async e => {
         downloadBtn.disabled = false;
       } catch (err) {
         console.error('Download error:', err);
-        
+        showError('Download failed. Opening in new tab instead.');
         window.open(json.result, '_blank');
         
         downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Download';
