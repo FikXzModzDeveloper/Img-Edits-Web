@@ -14,6 +14,7 @@ tiktok :
 lnjutin serah lu dah
 */
 
+
 const modeButtons = document.querySelectorAll('.slide-toggle button');
 const promptGroup = document.getElementById('promptGroup');
 const imageInput = document.getElementById('imageInput');
@@ -122,10 +123,13 @@ async function uploadToTmpFiles(file) {
     console.log('Upload response:', data);
 
     if (data.status === 'success' && data.data && data.data.url) {
-      let url = data.data.url;
-      url = url.replace('/org/', '/org/dl/');
-      console.log('Direct image URL:', url);
-      return url;
+      let originalUrl = data.data.url;
+      let parts = originalUrl.split('/');
+      let fileId = parts[parts.length - 2];
+      let fileName = parts[parts.length - 1];
+      let directUrl = `https://tmpfiles.org/dl/${fileId}/${fileName}`;
+      console.log('Direct image URL:', directUrl);
+      return directUrl;
     } else {
       throw new Error('Upload failed - no URL returned');
     }
