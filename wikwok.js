@@ -14,7 +14,6 @@ tiktok :
 lnjutin serah lu dah
 */
 
-
 const modeButtons = document.querySelectorAll('.slide-toggle button');
 const promptGroup = document.getElementById('promptGroup');
 const imageInput = document.getElementById('imageInput');
@@ -97,8 +96,26 @@ mainForm.addEventListener('submit', async e => {
     stopProgress();
     progressBox.classList.add('hidden');
     resultImg.src = json.result;
-    downloadBtn.href = json.result;
     resultBox.classList.remove('hidden');
+    
+    downloadBtn.onclick = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch(json.result);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `result_${Date.now()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } catch (err) {
+        console.error('Download error:', err);
+        showError('Download failed. Please try again.');
+      }
+    };
 
   } catch (err) {
     stopProgress();
