@@ -98,15 +98,42 @@ mainForm.addEventListener('submit', async e => {
     resultImg.src = json.result;
     resultBox.classList.remove('hidden');
     
-    downloadBtn.onclick = (e) => {
+    downloadBtn.onclick = async (e) => {
       e.preventDefault();
-      const a = document.createElement('a');
-      a.href = json.result;
-      a.download = `result_${Date.now()}.png`;
-      a.target = '_blank';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      downloadBtn.disabled = true;
+      downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Downloading...';
+      
+      try {
+        const response = await fetch(json.result, {
+          mode: 'cors'
+        });
+        
+        if (!response.ok) throw new Error('Network error');
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `result_${Date.now()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }, 100);
+        
+        downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Download';
+        downloadBtn.disabled = false;
+      } catch (err) {
+        console.error('Download error:', err);
+        
+        window.open(json.result, '_blank');
+        
+        downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> Download';
+        downloadBtn.disabled = false;
+      }
     };
 
   } catch (err) {
