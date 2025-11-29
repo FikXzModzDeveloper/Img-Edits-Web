@@ -122,8 +122,10 @@ async function uploadToTmpFiles(file) {
     console.log('Upload response:', data);
 
     if (data.status === 'success' && data.data && data.data.url) {
-      console.log('Upload URL:', data.data.url);
-      return data.data.url;
+      let url = data.data.url;
+      url = url.replace('/org/', '/org/dl/');
+      console.log('Direct image URL:', url);
+      return url;
     } else {
       throw new Error('Upload failed - no URL returned');
     }
