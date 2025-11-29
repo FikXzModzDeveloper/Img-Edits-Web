@@ -27,12 +27,12 @@ const errorBox = document.getElementById('errorBox');
 const errorText = document.getElementById('errorText');
 const progressBox = document.getElementById('progressBox');
 const progressBar = document.getElementById('progressBar');
-const uploadStatus = document.getElementById('uploadStatus');
 const resultBox = document.getElementById('resultBox');
 const resultImg = document.getElementById('resultImg');
 const downloadBtn = document.getElementById('downloadBtn');
 
 let currentMode = 'edit';
+let progressInterval = null;
 
 modeButtons.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -58,7 +58,10 @@ mainForm.addEventListener('submit', async e => {
   hideError();
   
   const file = imageInput.files[0];
-  if (!file) return showError('Please select an image.');
+  if (!file) {
+    return showError('Please select an image.');
+  }
+  
   if (currentMode === 'edit' && !promptInput.value.trim()) {
     return showError('Prompt is required for Img Edit.');
   }
@@ -66,11 +69,14 @@ mainForm.addEventListener('submit', async e => {
   submitBtn.disabled = true;
   progressBox.classList.remove('hidden');
   resultBox.classList.add('hidden');
-  animateProgress();
+  startProgress();
 
   try {
-    const cdnUrl = await uploadToUrl(file);
-    if (!cdnUrl) throw new Error('Upload gagal jir, mungkin lu jelek😂.');
+    const cdnUrl = await uploadToTmpFiles(file);
+    
+    if (!cdnUrl) {
+      throw new Error('Upload failed. Please try again.');
+    }
 
     let apiUrl = '';
     if (currentMode === 'edit') {
@@ -83,60 +89,74 @@ mainForm.addEventListener('submit', async e => {
 
     const res = await fetch(apiUrl);
     const json = await res.json();
+    
     if (!json.status || !json.result) {
-      throw new Error(json.message || 'API error.');
+      throw new Error(json.message || 'API processing failed.');
     }
 
+    stopProgress();
     progressBox.classList.add('hidden');
     resultImg.src = json.result;
     downloadBtn.href = json.result;
     resultBox.classList.remove('hidden');
 
   } catch (err) {
+    stopProgress();
     progressBox.classList.add('hidden');
-    showError(err.message || 'Something went wrong.');
+    showError(err.message || 'Something went wrong. Please try again.');
   } finally {
     submitBtn.disabled = false;
   }
 });
 
-async function uploadToUrl(file, timeout = 20000) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeout);
+async function uploadToTmpFiles(file) {
   const formData = new FormData();
   formData.append('file', file);
 
   try {
-    const res = await fetch('https://tmpfiles.org/api/v1/upload', {
+    const response = await fetch('https://tmpfiles.org/api/v1/upload', {
       method: 'POST',
-      body: formData,
-      signal: controller.signal
+      body: formData
     });
 
-    clearTimeout(timer);
-    const data = await res.json();
+    const data = await response.json();
+    console.log('Upload response:', data);
 
-    if (data?.status === 'success' && data?.data?.url) {
-      return data.data.url;
+    if (data.status === 'success' && data.data && data.data.url) {
+      let url = data.data.url;
+      url = url.replace('http://tmpfiles.org/', 'https://tmpfiles.org/dl/');
+      url = url.replace('https://tmpfiles.org/', 'https://tmpfiles.org/dl/');
+      console.log('Final URL:', url);
+      return url;
     } else {
-      throw new Error(data?.message || 'Upload gagal.');
+      throw new Error('Upload failed - no URL returned');
     }
   } catch (err) {
-    throw new Error('Error upload: ' + err.message);
+    console.error('Upload error:', err);
+    throw new Error('Upload failed: ' + err.message);
   }
 }
 
-function animateProgress() {
-  let w = 0;
+function startProgress() {
+  let width = 0;
   progressBar.style.width = '0%';
-  const timer = setInterval(() => {
-    w += Math.random() * 15;
-    if (w >= 90) {
-      clearInterval(timer);
-      w = 90;
+  
+  progressInterval = setInterval(() => {
+    width += Math.random() * 10;
+    if (width >= 90) {
+      width = 90;
+      clearInterval(progressInterval);
     }
-    progressBar.style.width = w + '%';
+    progressBar.style.width = width + '%';
   }, 300);
+}
+
+function stopProgress() {
+  if (progressInterval) {
+    clearInterval(progressInterval);
+    progressInterval = null;
+  }
+  progressBar.style.width = '100%';
 }
 
 function showError(msg) {
@@ -146,4 +166,5 @@ function showError(msg) {
 
 function hideError() {
   errorBox.classList.add('hidden');
+  errorText.textContent = '';
 }
